@@ -1,4 +1,4 @@
-from neuralnet.test_linalg import test_linalg
+from neuralnet.test_linalg import linalg_speed_benchmarks
 
 if __name__ == '__main__':
-    test_linalg()
+    linalg_speed_benchmarks()

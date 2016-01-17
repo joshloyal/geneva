@@ -100,7 +100,7 @@ cdef sgemm_speed(int size):
     blas_rate = loops / min(numpy_t.repeat(3, loops))
     print "blas sgemm:\t %9.0f kc/s %5.1fx" % (blas_rate/1000,blas_rate/np_rate)
 
-def test_linalg():
+def linalg_speed_benchmarks():
     print "Test single precision level 2 BLAS"
     for size in test_sizes:
         sgemv_speed(size); print
