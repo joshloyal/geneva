@@ -1,8 +1,6 @@
 #cython: boundscheck=False
 #cython: cdivision=True
 #cython nonecheck=False
-from libc.string cimport memcpy
-
 from cython.parallel import prange
 
 cimport numpy as np
@@ -10,8 +8,8 @@ import numpy as np
 
 from cymem.cymem cimport Pool
 
-from linalg cimport linalg
-from linalg import linalg
+from neuralnet.core cimport float_array_1d_t, float_array_2d_t
+from linalg cimport sgemm, broadcaste
 
 cdef extern from "math.h":
     cdef float expf(float x) nogil
@@ -76,21 +74,10 @@ cdef struct neural_net_layer:
 # W = (10, 3)
 # b = (10, 1)
 
-cpdef int broadcaste(float [:, ::1] x, float [:] y) nogil except -1:
-    cdef int n, m, i
-    n = x.shape[0]
-    m = y.shape[0]
-    if x.shape[1] != m:
-        with gil:
-            raise ValueError('Arrays not broadcastable.')
-    for i in range(n):
-        memcpy(<float*>&x[0, 0] + i * m, <float*>&y[0], m * sizeof(float))
-
-
 cdef void feed_forward(neural_net_layer* layer, float [:, ::1] X) nogil:
     # act = X * W.T + b
     broadcaste(layer.act, layer.b)
-    linalg.sgemm(1.0, X, layer.W, 1.0, layer.act)
+    sgemm(1.0, X, layer.W, 1.0, layer.act)
 
     # apply the non-linearity (this memory access is slow)
     cdef int n, m

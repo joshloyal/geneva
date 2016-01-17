@@ -1,6 +1,10 @@
 #cython: boundscheck=False
 #cython: cdivision=True
 #cython: wraparound=False
+from libc.string cimport memcpy
+
+from neuralnet.core cimport float_array_1d_t, float_array_2d_t
+from neuralnet cimport linalg
 
 #
 # vector operations
@@ -32,3 +36,16 @@ cdef void sgemm(float alpha, float_array_2d_t A, float_array_2d_t B,
     lib_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, C.shape[0], C.shape[1],
               B.shape[0], alpha, <float*>&A[0, 0], A.shape[1], <float*>&B[0, 0],
               B.shape[1], beta, <float*>&C[0, 0], C.shape[1])
+
+#
+# utility functions
+#
+cpdef int broadcaste(float_array_2d_t x, float_array_1d_t y) nogil except -1:
+    cdef int n, m, i
+    n = x.shape[0]
+    m = y.shape[0]
+    if x.shape[1] != m:
+        with gil:
+            raise ValueError('Arrays not broadcastable.')
+    for i in range(n):
+        memcpy(<float*>&x[0, 0] + i * m, <float*>&y[0], m * sizeof(float))

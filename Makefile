@@ -18,5 +18,5 @@ speed:
 clean:
 	\rm -f $(PKGDIR)/*.c
 	\rm -f $(PKGDIR)/*.so
-	\rm -f ./linalg/*.c
-	\rm -f ./linalg/*.so
+	\rm -f $(PKGDIR)/linalg/*.c
+	\rm -f $(PKGDIR)/linalg/*.so

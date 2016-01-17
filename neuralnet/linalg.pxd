@@ -1,5 +1,4 @@
-ctypedef float[::1] float_array_1d_t
-ctypedef float [:, ::1] float_array_2d_t
+from neuralnet.core cimport float_array_1d_t, float_array_2d_t
 
 cdef extern from "cblas.h":
 
@@ -42,3 +41,4 @@ cdef void scopy(float_array_1d_t x, float_array_1d_t y) nogil
 cdef void saxpy(float alpha, float_array_1d_t x, float_array_1d_t y) nogil
 cdef void sgemv(float alpha, float_array_2d_t A, float_array_1d_t x, float beta, float_array_1d_t y) nogil
 cdef void sgemm(float alpha, float_array_2d_t A, float_array_2d_t B, float beta, float_array_2d_t C) nogil
+cpdef int broadcaste(float_array_2d_t x, float_array_1d_t y) nogil except -1
