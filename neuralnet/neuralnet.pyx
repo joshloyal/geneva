@@ -90,7 +90,7 @@ cpdef int broadcaste(float [:, ::1] x, float [:] y) nogil except -1:
 cdef void feed_forward(neural_net_layer* layer, float [:, ::1] X) nogil:
     # act = X * W.T + b
     broadcaste(layer.act, layer.b)
-    linalg.sgemm_(1.0, X, layer.W, 1.0, layer.act)
+    linalg.sgemm(1.0, X, layer.W, 1.0, layer.act)
 
     # apply the non-linearity (this memory access is slow)
     cdef int n, m
