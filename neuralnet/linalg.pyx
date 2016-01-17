@@ -3,8 +3,7 @@
 #cython: wraparound=False
 from libc.string cimport memcpy
 
-from neuralnet.core cimport float_array_1d_t, float_array_2d_t
-from neuralnet cimport linalg
+from core cimport float_array_1d_t, float_array_2d_t
 
 #
 # vector operations
